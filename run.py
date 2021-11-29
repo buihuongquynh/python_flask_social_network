@@ -1,9 +1,9 @@
-from flask import Flask, render_template, request
-import sqlite3 as sql
-app = Flask(__name__)
+from flask import Flask, render_template, request, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
 
-@app.route('/')
-def home():
-   return render_template('home.html')
+from initial import create_app
+
+app = create_app()
+
 if __name__ == '__main__':
    app.run(debug = True)
