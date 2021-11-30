@@ -1,7 +1,7 @@
 # python_flask_social_network
 # Required Module:
- ## Fastapi
-    pip install fastapi
+ ## virtualenv
+    pip install virtualenv
  ## Flask
     pip install Flask
 ***Run server:***
