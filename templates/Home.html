@@ -12,6 +12,7 @@
     </li>
     {% endfor %}
   </ul>
+  {% if user.is_authenticated %}
   <form method="POST">
     <textarea name="post" id="post" class="form-control"></textarea>
     <br />
@@ -19,4 +20,5 @@
       <button type="submit" class="btn btn-primary">Add Note</button>
     </div>
   </form>
+  {% endif %}
 {% endblock %}

@@ -9,6 +9,7 @@ views = Blueprint('views',__name__)
 
 @views.route('/', methods = ['GET', 'POST'])
 def home():
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
     if request.method == 'POST':
         post = request.form.get('post')
         if len(post) < 1:
@@ -18,4 +19,12 @@ def home():
             db.session.add(new_post)
             db.session.commit()
             flash('Post is created!', category='success')
-    return render_template('home.html', user= current_user, posts= current_user.posts)
+    return render_template('home.html', user= current_user, posts= posts)
+
+@views.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+@views.errorhandler(500)
+def page_not_found(e):
+    return render_template('500.html'), 500
