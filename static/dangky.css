@@ -59,6 +59,7 @@ h1{
 }
 .input-box input[type='text'],
 .input-box input[type='password'],
+.input-box input[type='email'],
 .input-box input[type='date']{
     padding: 7.5px 15px;
     width: 100%;

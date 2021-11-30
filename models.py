@@ -4,6 +4,7 @@ from flask import app
 from initial import DB_NAME, db
 from flask_login import UserMixin
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
 class Follow(db.Model):
@@ -35,10 +36,19 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, index=True)
     email = db.Column(db.String(150), unique= True)
-    password = db.Column(db.String(150))
+    # password = db.Column(db.String(150))
+    password_hash = db.Column(db.String(128))
     posts = db.relationship('Post', backref="author", lazy='dynamic')
     comments = db.relationship('Comment', backref="user_comment", lazy=True)
     followed = db.relationship('Follow', foreign_keys=[Follow.follower_id], backref=db.backref('follower', lazy='joined'), lazy='dynamic', cascade='all, delete-orphan')
     followers = db.relationship('Follow', foreign_keys=[Follow.followed_id], backref=db.backref('followed', lazy='joined'), lazy='dynamic', cascade='all, delete-orphan')
+    @property
+    def password(self):
+        raise AttributeError('password is not a readable attribute')
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
+    def verify_password(self, password):
+        return check_password_hash(self.password_hash, password)
     def __repr__(self):
         return '<User %r>' % self.username
