@@ -15,10 +15,11 @@
         crossorigin="anonymous"
         />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
         <title>{% block title %}Home{% endblock %}</title>
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
         <button
             class="navbar-toggler"
             type="button"
@@ -34,7 +35,7 @@
             <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
             {% else %}
             <a class="nav-item nav-link" id="login" href="/login">Login</a>
-            <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
+            <a class="nav-item nav-link" id="signUp" href="/signup">Sign Up</a>
             {% endif %}
             </div>
         </div>
