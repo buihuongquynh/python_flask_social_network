@@ -2,23 +2,117 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
   %}
   <h1 align="center">Posts</h1>
-  <ul class="list-group list-group-flush" id="notes">
-    {% for post in posts %}
-    <li class="list-group-item">
-      {{ post.body }}
-      <button type="button" class="close" onClick="deleteNote({{ posts.id }})">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </li>
-    {% endfor %}
-  </ul>
   {% if user.is_authenticated %}
-  <form method="POST">
-    <textarea name="post" id="post" class="form-control"></textarea>
-    <br />
-    <div align="center">
-      <button type="submit" class="btn btn-primary">Add Note</button>
+  <form method="POST" style="background-color: rgb(255, 44, 79); border-radius: 6px;" enctype="multipart/form-data">
+    <div class="container-cus">
+      <p style="color: white;">What are you thinking ?</p>
+      <textarea name="post" id="post" class="form-control"></textarea>
+      <br />
+      <input name="image" type="file" id ="file" style="display: none;">
+      <div>
+      <label for="file">
+        <span class="material-icons">
+          add_photo_alternate
+        </span>
+        Add a photo
+      </label>
+      </div>
+      <div>
+        <button type="submit" class="btn btn-primary">Click here to post!</button>
+      </div>
     </div>
   </form>
   {% endif %}
+  <ul class="list-group list-group-flush" id="notes">
+    {% for post in posts %}
+    <li class="list-group-item">
+      <!-- <button type="button" class="close" onClick="deleteNote({{ posts.id }})">
+        <span aria-hidden="true">&times;</span>
+      </button> -->
+      <div class ="card">
+        <img src="static/{{post.img}}" onerror="this.onerror=null;this.src='/static/default-image.jpg';" alt="Avatar" style="width:100%; height: 400px;">
+        <div class="container">
+          <div style="margin-top: 2%;"></div>
+            <!-- <button type="button" class="close" onClick="deleteNote({{ posts.id }})">
+              <span aria-hidden="true">&times;</span>
+            </button> -->
+            {% if post.author_id == user.id %}
+            <span> My post </span>
+            {% else %}
+            <span>author: <a href="" >{{ post.author.username}}</a></span>
+            {% endif %}
+            {% if post.author_id == user.id %}
+            <!-- <button type="button" class="close" onClick="deleteNote({{ posts.id }})">
+              <span class="material-icons">
+                settings
+                </span>
+            </button> -->
+            <div class="btn-group" style="margin-left: 90%;">
+              <button
+                type="button"
+                class="btn btn-sm btn-primary dropdown-toggle"
+                data-bs-toggle="dropdown"
+              ></button>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/delete-post/{{post.id}}" class="dropdown-item">Delete</a>
+                </li>
+                <li>
+                  <a href="/edit-post/{{post.id}}" class="dropdown-item">Edit</a>
+                </li>
+              </ul>
+            </div>
+            {% endif %}
+            <p>Created at: {{post.timestamp.strftime("%c")}}</p>
+            <p>{{ post.body }}</p>
+            <a href="#comments" class="viewbutton">Comments</a>
+            <div class="content">
+              <div style="margin-bottom: 10px;"></div>
+              <form method="POST">
+                <textarea name="post" id="post" class="form-control"></textarea>
+                <br />
+                <div>
+                  <button type="submit" class="btn btn-primary" style="margin-left: 85%;">Send comment</button>
+                </div>
+              </form>
+              <div style="margin-bottom: 50px;"></div>
+              <hr>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            </div>
+        </div>
+    </div>
+    </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
+
+{% block action %}
+<script>
+  var coll = document.getElementsByClassName("viewbutton");  
+  for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    });
+  }
+
+  var textarea = document.querySelector('textarea');
+
+  textarea.addEventListener('keydown', autosize);
+              
+  function autosize(){
+    var el = this;
+    setTimeout(function(){
+      el.style.cssText = 'height:auto; padding:0';
+      // for box-sizing other than "content-box" use:
+      // el.style.cssText = '-moz-box-sizing:content-box';
+      el.style.cssText = 'height:' + el.scrollHeight + 'px';
+    },0);
+  }
+</script>
 {% endblock %}
