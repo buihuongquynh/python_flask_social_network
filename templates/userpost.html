@@ -1,0 +1,143 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+    %}
+    <h1 align="center">{{username}}'s Posts</h1>
+        <ul class="list-group list-group-flush" id="notes">
+        {% for post in posts %}
+        <li class="list-group-item">
+            <!-- <button type="button" class="close" onClick="deleteNote({{ posts.id }})">
+            <span aria-hidden="true">&times;</span>
+            </button> -->
+            <div class ="card">
+                <img src='/static/{{post.img}}' onerror="this.onerror=null;this.src='/static/default-image.jpg';" alt="Avatar" style="width:100%; height: 400px;">
+                <div class="container">
+                    <div style="margin-top: 2%;"></div>
+                    <!-- <button type="button" class="close" onClick="deleteNote({{ posts.id }})">
+                        <span aria-hidden="true">&times;</span>
+                    </button> -->
+                    {% if post.author_id == user.id %}
+                    <span><a href="/posts/{{post.author_id}}"  class="link-success"><b> My post </b></a></span>
+                    {% else %}
+                    <span style="color: red;"><b>Author: </b><a href="/posts/{{post.author_id}}"  class="link-dark">{{ post.author.username}}</a></span>
+                    {% endif %}
+                    {% if post.author_id == user.id %}
+                    <!-- <button type="button" class="close" onClick="deleteNote({{ posts.id }})">
+                        <span class="material-icons">
+                        settings
+                        </span>
+                    </button> -->
+                    <div class="btn-group" style="margin-left: 90%;">
+                        <button
+                        type="button"
+                        class="btn btn-sm btn-danger dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                        ></button>
+                        <ul class="dropdown-menu">
+                        <li>
+                            <a href="/delete-post/{{post.id}}" class="dropdown-item">Delete</a>
+                        </li>
+                        <li>
+                            <a href="/edit-post/{{post.id}}" class="dropdown-item">Edit</a>
+                        </li>
+                        </ul>
+                    </div>
+                    {% endif %}
+                    <p><b>Created at: </b>{{post.timestamp.strftime("%c")}}</p>
+                    <p>{{ post.body }}</p>
+                    <a href="#comments" class="viewbutton">Comments</a>
+                    <div class="content">
+                        <div style="margin-bottom: 10px;"></div>
+                        <form method="POST">
+                        <textarea name="post" id="post" class="form-control"></textarea>
+                        <br />
+                        <div>
+                            <button type="submit" class="btn btn-primary" style="margin-left: 85%;">Send comment</button>
+                        </div>
+                        </form>
+                        <div style="margin-bottom: 50px;"></div>
+                        <hr>
+                        <p class="card-text">
+                            {% if post.comments|length > 0 %}
+                            <a data-bs-toggle="collapse" href="#comments-{{post.id}}" role="button">
+                                <small>View {{post.comments|length}} Comments</small>
+                            </a>
+                            {% else %}
+                            <small class="text-muted">No Comments</small>
+                            {% endif %}
+                        </p>
+                            <div class="collapse" id="comments-{{post.id}}" style="margin-right: 2%;">
+                                <div class="card">
+                                <div class="card-body" id="comments-expanded-{{post.id}}">
+                                    {% for comment in post.comments %}
+                                    <div class="d-flex justify-content-between align-items-center" style="margin-top: 2px;">
+                                    <div>
+                                        <a href="/posts/{{comment.user_id}}"
+                                        >{{comment.user_comment.username}}</a
+                                        >: {{comment.content}}
+                                    </div>
+                                    <div>
+                                        <small class="text-muted"> {{comment.timestamp.strftime("%c")}}</small>
+                                        {% if user.id == comment.user_id or user.id == post.author_id %}
+                                        <div class="btn-group">
+                                        <button
+                                            type="button"
+                                            class="btn btn-sm btn-primary dropdown-toggle"
+                                            data-bs-toggle="dropdown"
+                                        ></button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                            <a
+                                                href="/delete-comment/{{comment.id}}"
+                                                class="dropdown-item"
+                                                >Delete</a
+                                            >
+                                            </li>
+                                        </ul>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div align="center">
+                <a href="/"><button type="button" class="btn btn-primary btn-lg">Back to Home</button></a>
+            </div>
+        </li>
+        {% endfor %}
+        </ul>
+    {% endblock %}
+    
+    {% block action %}
+    <script>
+        var coll = document.getElementsByClassName("viewbutton");  
+        for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+            content.style.display = "none";
+            } else {
+            content.style.display = "block";
+            }
+        });
+        }
+    
+        var textarea = document.querySelector('textarea');
+    
+        textarea.addEventListener('keydown', autosize);
+                    
+        function autosize(){
+        var el = this;
+        setTimeout(function(){
+            el.style.cssText = 'height:auto; padding:0';
+            // for box-sizing other than "content-box" use:
+            // el.style.cssText = '-moz-box-sizing:content-box';
+            el.style.cssText = 'height:' + el.scrollHeight + 'px';
+        },0);
+        }
+    </script>
+{% endblock %}

@@ -41,3 +41,13 @@ label:hover {
 .container-cus {
     padding: 10px 16px;
 }
+
+#content {
+    -moz-transition: height .5s;
+    -ms-transition: height .5s;
+    -o-transition: height .5s;
+    -webkit-transition: height .5s;
+    transition: height .5s;
+    height: 0;
+    overflow: hidden;
+}
