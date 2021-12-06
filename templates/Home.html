@@ -37,9 +37,9 @@
               <span aria-hidden="true">&times;</span>
             </button> -->
             {% if post.author_id == user.id %}
-            <span><a href="/posts/{{post.author_id}}"  class="link-success"><b> My post </b></a></span>
+            <span><a href="/profile/{{post.author_id}}"  class="link-success"><b> You </b></a></span>
             {% else %}
-            <span style="color: red;"><b>Author: </b><a href="/posts/{{post.author_id}}"  class="link-dark">{{ post.author.username}}</a></span>
+            <span style="color: red;"><b>Author: </b><a href="/profile/{{post.author_id}}"  class="link-dark">{{ post.author.username}}</a></span>
             {% endif %}
             {% if post.author_id == user.id %}
             <!-- <button type="button" class="close" onClick="deleteNote({{ posts.id }})">
@@ -68,6 +68,7 @@
             <a href="#comments" class="viewbutton">Comments</a>
             <div class="content">
               <div style="margin-bottom: 10px;"></div>
+              {% if user.is_authenticated %}
               <form method="POST" action="/create-comment/{{post.id}}">
                 <textarea name="text" id="post" class="form-control"></textarea>
                 <br />
@@ -75,6 +76,7 @@
                   <button type="submit" class="btn btn-primary" style="margin-left: 85%;">Send comment</button>
                 </div>
               </form>
+              {% endif %}
               <div style="margin-bottom: 50px;"></div>
               <hr>
               <p class="card-text">
