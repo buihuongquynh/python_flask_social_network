@@ -2,7 +2,7 @@ import os
 from flask import Blueprint, render_template, request, redirect
 from flask.helpers import flash, url_for
 from flask_login import login_user, login_required, logout_user, current_user
-from models import Post, User, Comment
+from models import Post, User, Comment, Follow
 from initial import db
 from werkzeug.utils import secure_filename  
 
@@ -80,7 +80,6 @@ def edit_post(id):
 
 
 @views.route("/posts/<author_id>")
-@login_required
 def posts(author_id):
     user = User.query.filter_by(id=author_id).first()
     username = user.username
@@ -90,7 +89,7 @@ def posts(author_id):
         return redirect(url_for('views.home'))
 
     posts = Post.query.filter_by(author_id=user.id).all()
-    return render_template("userpost.html", user=current_user, posts=posts, username=username)
+    return render_template("userpost.html", user=current_user, posts=posts, username=username, author=user)
 
 
 @views.route("/create-comment/<post_id>", methods=['POST'])
@@ -128,6 +127,38 @@ def delete_comment(comment_id):
 
     return redirect(url_for('views.home'))
 
+
+@views.route("/profile/<author_id>")
+def profile(author_id):
+    user = User.query.filter_by(id=author_id).first()
+    follower = current_user
+    hasfollow = Follow()
+    if follower.is_authenticated:
+        hasfollow = Follow.query.filter_by(follower_id=follower.id, followed_id=user.id).first()
+
+    if not user:
+        flash('No user with that username exists.', category='error')
+        return redirect(url_for('views.home'))
+    
+    return render_template("userprofile.html", Blogger = user,user = current_user, hasfollow = hasfollow)
+
+
+@views.route("/follow_user/<user_id>", methods=['GET'])
+@login_required
+def follow(user_id):
+    followed = User.query.filter_by(id=user_id).first()
+    follower = current_user
+    hasfollow = Follow.query.filter_by(follower_id=follower.id, followed_id=followed.id).first()
+    if not follower:
+        flash('User does not exists.', category='error')
+    elif hasfollow:
+        db.session.delete(hasfollow)
+        db.session.commit()
+    else:
+        hasfollow = Follow(follower_id= follower.id, followed_id=followed.id)
+        db.session.add(hasfollow)
+        db.session.commit()
+    return redirect(url_for('views.profile', author_id = followed.id))
 
 @views.errorhandler(404)
 def page_not_found(e):

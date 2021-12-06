@@ -39,10 +39,10 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(150), unique= True)
     # password = db.Column(db.String(150))
     password_hash = db.Column(db.String(128))
-    posts = db.relationship('Post', backref="author", lazy='dynamic')
+    posts = db.relationship('Post', backref="author", lazy=True)
     comments = db.relationship('Comment', backref="user_comment", lazy=True)
-    followed = db.relationship('Follow', foreign_keys=[Follow.follower_id], backref=db.backref('follower', lazy='joined'), lazy='dynamic', cascade='all, delete-orphan')
-    followers = db.relationship('Follow', foreign_keys=[Follow.followed_id], backref=db.backref('followed', lazy='joined'), lazy='dynamic', cascade='all, delete-orphan')
+    followed = db.relationship('Follow', foreign_keys=[Follow.follower_id], backref=db.backref('follower', lazy='joined'), lazy=True, cascade='all, delete-orphan')
+    followers = db.relationship('Follow', foreign_keys=[Follow.followed_id], backref=db.backref('followed', lazy='joined'), lazy=True, cascade='all, delete-orphan')
     @property
     def password(self):
         raise AttributeError('password is not a readable attribute')
