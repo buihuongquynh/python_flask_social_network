@@ -1,5 +1,6 @@
 # python_flask_social_network
 # Required Module:
+ # Flask
     pip install Flask
     pip install Flask-SQLAlchemy
     pip install Flask-Login
