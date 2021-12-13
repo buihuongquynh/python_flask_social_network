@@ -8,7 +8,7 @@ from werkzeug.utils import secure_filename
 
 views = Blueprint('views',__name__)
 
-@views.route('/', methods = ['GET', 'POST'])
+@views.route("/", methods = ['GET', 'POST'])
 def home():
     posts = Post.query.order_by(Post.timestamp.desc()).all()
     if request.method == 'POST':
