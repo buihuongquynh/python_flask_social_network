@@ -29,7 +29,7 @@ def home():
             db.session.commit()
             flash('Post is created!', category='success')
             return redirect(url_for('views.home'))
-    return render_template('home.html', user= current_user, posts= posts)
+    return render_template('Home.html', user= current_user, posts= posts)
 
 
 @views.route("/delete-post/<id>")
