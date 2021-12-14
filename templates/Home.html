@@ -1,9 +1,10 @@
 
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
   %}
-  <h1 align="center">Posts</h1>
+  <h1 align="center">Today's blog post</h1>
   {% if user.is_authenticated %}
-  <form method="POST" style="background-color: rgb(255, 44, 79); border-radius: 6px;" enctype="multipart/form-data">
+  <form method="POST" style="background: linear-gradient(to right, gray , rgb(0, 89, 255)) ; border-radius: 6px; width: 70%; margin: auto;
+  " enctype="multipart/form-data">
     <div class="container-cus">
       <p style="color: white;">What are you thinking ?</p>
       <textarea name="post" id="post" class="form-control"></textarea>
@@ -23,7 +24,7 @@
     </div>
   </form>
   {% endif %}
-  <ul class="list-group list-group-flush" id="notes">
+  <ul class="list-group list-group-flush" id="posts">
     {% for post in posts %}
     <li class="list-group-item">
       <!-- <button type="button" class="close" onClick="deleteNote({{ posts.id }})">
@@ -50,9 +51,11 @@
             <div class="btn-group" style="margin-left: 90%;">
               <button
                 type="button"
-                class="btn btn-sm btn-danger dropdown-toggle"
+                class="btn btn-sm btn-secondary dropdown-toggle"
                 data-bs-toggle="dropdown"
-              ></button>
+              >
+              <i style="font-size:18px" class="fa">&#xf013;</i>
+              </button>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/delete-post/{{post.id}}" class="dropdown-item">Delete</a>
@@ -89,7 +92,7 @@
                 {% endif %}
               </p>
               <div class="collapse" id="comments-{{post.id}}" style="margin-right: 2%;">
-                <div class="card">
+                <div class="card" style="width: 95%;">
                   <div class="card-body" id="comments-expanded-{{post.id}}">
                     {% for comment in post.comments %}
                     <div class="d-flex justify-content-between align-items-center" style="margin-top: 2px;">
@@ -123,13 +126,15 @@
                     {% endfor %}
                   </div>
                 </div>
-              </div>  
+              </div>
+              <div style="margin-bottom: 20px;"></div>
             </div>
         </div>
     </div>
     </li>
     {% endfor %}
   </ul>
+  <div style="margin-top: 5%;"></div>
 {% endblock %}
 
 {% block action %}

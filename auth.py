@@ -13,7 +13,9 @@ def login():
         password = request.form.get('password')
 
         user = User.query.filter_by(email=email).first()
-        if user:
+        if (email == "") or (password == ""):
+            flash('Please fill out the form completely.', category='error')
+        elif user:
             if user.verify_password(password):
                 flash('Logged in successfully!', category='success')
                 login_user(user, remember=True)
@@ -40,16 +42,20 @@ def signup():
 
         user = User.query.filter_by(email=email).first()
 
-        if user:
+        if (email == "") or (username == "") or (password == "") or (repassword == ""):
+            flash('Please fill out the form completely.', category='error')
+        elif user:
             flash('Email already exists.', category='error')
         elif len(email) < 4:
             flash('Email must be greater than 3 characters.', category='error')
         elif len(username) < 2:
             flash('Username must be greater than 1 character.', category='error')
-        elif password != repassword:
-            flash('Password don\'t match.', category= 'error')
         elif len(password) < 6:
             flash('Password must be at least 7 characters.', category= 'error')
+        elif len(repassword) < 6:
+            flash('Password must be at least 7 characters.', category= 'error')
+        elif password != repassword:
+            flash('Password don\'t match.', category= 'error')
         else:
             new_user = User(email=email, username=username, password = password)
             from initial import db
