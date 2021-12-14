@@ -38,9 +38,9 @@
               <span aria-hidden="true">&times;</span>
             </button> -->
             {% if post.author_id == user.id %}
-            <span><a href="/profile/{{post.author_id}}"  class="link-success"><b> You </b></a></span>
+            <span><a href="/profile/{{post.author_id}}"  class="link-success" style="text-decoration: none;"><b> You </b></a></span>
             {% else %}
-            <span style="color: red;"><b>Author: </b><a href="/profile/{{post.author_id}}"  class="link-dark">{{ post.author.username}}</a></span>
+            <span style="color: red;"><b>Author: </b><a href="/profile/{{post.author_id}}"  class="link-primary" style="text-decoration: none;"><b>{{ post.author.username}}</b></a></span>
             {% endif %}
             {% if post.author_id == user.id %}
             <!-- <button type="button" class="close" onClick="deleteNote({{ posts.id }})">
@@ -58,7 +58,7 @@
               </button>
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/delete-post/{{post.id}}" class="dropdown-item">Delete</a>
+                  <a href="/delete-post/{{post.id}}" class="dropdown-item link-danger">Delete</a>
                 </li>
                 <li>
                   <a href="/edit-post/{{post.id}}" class="dropdown-item">Edit</a>
@@ -66,7 +66,7 @@
               </ul>
             </div>
             {% endif %}
-            <p><b>Created at: </b>{{post.timestamp.strftime("%c")}}</p>
+            <p style="font-size: smaller;"><b>Created at: </b>{{post.timestamp.strftime("%c")}}</p>
             <p>{{ post.body }}</p>
             <a href="#comments" class="viewbutton">Comments</a>
             <div class="content">
@@ -114,7 +114,7 @@
                             <li>
                               <a
                                 href="/delete-comment/{{comment.id}}"
-                                class="dropdown-item"
+                                class="dropdown-item link-danger"
                                 >Delete</a
                               >
                             </li>
