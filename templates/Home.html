@@ -24,9 +24,9 @@
     </div>
   </form>
   {% endif %}
-  <ul class="list-group list-group-flush" id="posts">
+  <ul class="list-group list-group-flush" id="posts" style="background: none;">
     {% for post in posts %}
-    <li class="list-group-item">
+    <li class="list-group-item" style="background: none;">
       <!-- <button type="button" class="close" onClick="deleteNote({{ posts.id }})">
         <span aria-hidden="true">&times;</span>
       </button> -->
@@ -105,12 +105,14 @@
                         <small class="text-muted"> {{comment.timestamp.strftime("%c")}}</small>
                         {% if user.id == comment.user_id or user.id == post.author_id %}
                         <div class="btn-group">
-                          <button
+                          <a
                             type="button"
-                            class="btn btn-sm btn-primary dropdown-toggle"
+                            class="fa fa-trash link-primary"
+                            style="text-decoration: none; font-size: 18px;"
                             data-bs-toggle="dropdown"
-                          ></button>
-                          <ul class="dropdown-menu">
+                            href="/delete-comment/{{comment.id}}"
+                          ></a>
+                          <!-- <ul class="dropdown-menu">
                             <li>
                               <a
                                 href="/delete-comment/{{comment.id}}"
@@ -118,8 +120,10 @@
                                 >Delete</a
                               >
                             </li>
-                          </ul>
+                          </ul> -->
                         </div>
+                        {% else %}
+                        <div class="btn-group" style="margin-right: 14px;"></div>
                         {% endif %}
                       </div>
                     </div>
