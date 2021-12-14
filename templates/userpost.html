@@ -28,9 +28,11 @@
                     <div class="btn-group" style="margin-left: 90%;">
                         <button
                         type="button"
-                        class="btn btn-sm btn-danger dropdown-toggle"
+                        class="btn btn-sm btn-secondary dropdown-toggle"
                         data-bs-toggle="dropdown"
-                        ></button>
+                        >
+                        <i style="font-size:18px" class="fa">&#xf013;</i>
+                        </button>
                         <ul class="dropdown-menu">
                         <li>
                             <a href="/delete-post/{{post.id}}" class="dropdown-item">Delete</a>
@@ -67,7 +69,7 @@
                             {% endif %}
                         </p>
                             <div class="collapse" id="comments-{{post.id}}" style="margin-right: 2%;">
-                                <div class="card">
+                                <div class="card" style="width: 95%;">
                                 <div class="card-body" id="comments-expanded-{{post.id}}">
                                     {% for comment in post.comments %}
                                     <div class="d-flex justify-content-between align-items-center" style="margin-top: 2px;">
@@ -102,15 +104,18 @@
                                 </div>
                                 </div>
                             </div>
+                            <div style="margin-bottom: 20px;"></div>
                     </div>
                 </div>
             </div>
         </li>
         {% endfor %}
         </ul>
+        <div style= "margin-top: 2%;"></div>
         <div align="center">
-            <a href="/profile/{{author.id}}"><button type="button" class="btn btn-primary btn-lg">Back to Home</button></a>
+            <a href="/profile/{{author.id}}"><button type="button" class="btn btn-primary btn-lg">Back</button></a>
         </div>
+        <div style= "margin-top: 2%;"></div>
     {% endblock %}
     
     {% block action %}
